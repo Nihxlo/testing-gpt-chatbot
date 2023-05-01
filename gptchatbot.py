@@ -2,7 +2,8 @@ import openai
 import re
 import random
 
-openai.api_key = "Insert API Key Here"  # Replace with your OpenAI API key
+with open("api_key.txt") as f:
+  openai.api_key = f.read()
 
 # Define greeting and response functions
 GREETING_INPUTS = ["hello", "hi", "greetings", "sup", "what's up", "hey"]
@@ -43,9 +44,10 @@ def main():
                 if(greeting(user_response)!=None):
                     print("BOT: "+greeting(user_response))
                 else:
-                    print("BOT: ",end="")
-                    print(get_response(user_response))
-                    sent_tokens.remove(user_response)
+                    if user_response not in sent_tokens:
+                        print("BOT: ",end="")
+                        print(get_response(user_response))
+                        sent_tokens.remove(user_response)
         else:
             flag=False
             print("BOT: Bye! take care..")
